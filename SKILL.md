@@ -1,6 +1,6 @@
 ---
 name: aihero
-description: Identify the user's intent, pick the relevant skill from a curated high-quality set, and follow its instructions. Trigger on workflow-shaped requests — new idea or feature, sharpen a plan, write a spec, split tickets, implement, review code, write a PR, debug a hard bug, handoff a session, cited research, throwaway prototype — AND on UI/visual requests (beautify or restyle a page, build UI, frontend design, pick colors/fonts/styles, recommend a good-looking UI, find design inspiration or reference sites). Also the DEFAULT FIRST STOP for any non-trivial work request, even vague or casual ones (帮我美化一下 / 做个页面 / 优化一下) with no matching keyword: invoke aihero to route; if nothing in the table fits, say so and proceed directly. 识别意图 → 选用精选 skill → 按其指示执行。
+description: Intent router — pick the right skill from a curated set and follow it. Trigger on workflow requests (new idea/feature, sharpen a plan, write a spec, split tickets, implement, code review, PR, hard bug, session handoff, cited research) and UI/visual requests (beautify or restyle a page, build UI, frontend design, pick colors/fonts, recommend a good-looking UI, design inspiration, reference sites). DEFAULT FIRST STOP for any non-trivial request, even vague ones (帮我美化一下 / 做个页面 / 优化一下) — route here; no fit in table → say so and proceed directly. 识别意图 → 选用精选 skill → 按其指示执行。
 ---
 
 # AI Hero Skills
@@ -11,7 +11,7 @@ description: Identify the user's intent, pick the relevant skill from a curated 
 
 | 意图信号 | Skill | 调用方式 |
 |---|---|---|
-| 新想法/功能要先聊透（一律用 grill-me，2026-11-05 用户定：grill-me 已覆盖 grill-with-docs 的场景，不再主动用 grill-with-docs） | grill-me | 🔒 一句确认后调 |
+| 新想法/功能要先聊透 | grill-me | 🔒 一句确认后调 |
 | 聊定了 → 写正式规格 | to-spec | 🔒 一句确认后调 |
 | 规格 → 拆工单 | to-tickets | 🔒 一句确认后调 |
 | 按规格/工单实现（测试优先） | implement | 🔒 一句确认后调 |
@@ -23,7 +23,7 @@ description: Identify the user's intent, pick the relevant skill from a curated 
 | 设计/选型问题需要可运行验证 | prototype | ✅ 直接调 |
 | 美化页面/界面、新做 UI、前端视觉方向（含找组件库/设计参考） | frontend-design | ✅ 直接调 |
 | 配色/字体/风格选型、UX/可访问性审查、组件与图表规范 | ui-ux-pro-max | ✅ 直接调 |
-| 落地页/公司/产品官网从零建或重做，页面被嫌"AI 味/模板脸" | design-taste-frontend（即 tasteskill 2.5.0，leonxlnx） | ✅ 直接调 |
+| 落地页/公司/产品官网从零建或重做，页面被嫌"AI 味/模板脸" | design-taste-frontend（即 tasteskill，leonxlnx） | ✅ 直接调 |
 | 交付前 UI 代码审计：按 Vercel Web Interface Guidelines 100+ 条规则出 file:line 报告 | web-design-guidelines（Vercel Labs） | ✅ 直接调 |
 | 产品级 UI 精修：对照 80 万+ 真实截图定设计契约，跑 finish gate 后再交付 | anti-ui-slop（UIZZE） | ✅ 直接调 |
 | 推荐好看的 UI / 要设计灵感、参考网站（按页面内容给方向和站点，不动手改） | ui-ux-pro-max（按规则 10 展开） | ✅ 直接调 |
@@ -35,11 +35,11 @@ description: Identify the user's intent, pick the relevant skill from a curated 
 ## 规则
 
 1. 行动前**读目标 SKILL.md 全文**——上表只做定位，摘要可能过时
-2. 意图清晰唯一 → 按表处理；Skill 工具拒绝 🔒 skill 时请用户输入 `/<名称>`，或直接 Read 本地 SKILL.md 照做（兜底路径，始终可用）
+2. 意图清晰唯一 → 按表处理。Skill 工具拒绝时：🔒 skill → 请用户输入 `/<名称>`，或直接 Read 本地 SKILL.md 照做（兜底路径，始终可用）；**本地未装/Read 不到 → 明说"该 skill 未安装"，按规则 6 给安装命令或问是否改用相近 skill，不静默失败、不硬造内容**（2026-11-05 测试补）
 3. 意图模糊 → 列 2-3 个候选 + 一句话理由让用户选
 4. 主流程边界主动建议下一步（grill-me → to-spec → to-tickets → implement → code-review → pr），不在用户专注时打断；UI 流程同理（frontend-design / ui-ux-pro-max 起手定方向 → design-taste-frontend 做落地页 → web-design-guidelines / anti-ui-slop 收尾审计）
 5. **表外 skill**（grilling、wayfinder、teach、domain-modeling、ask-matt 等）：不主动路由、不主动安装。ask-matt 的路由职能已由本 skill 取代
-6. 用户明确要装新 skill 时才装：`npx skills add mattpocock/skills --skill <name> -g -y`（装不上=代理没开，提醒用户；或在线读内容照做不落盘）
+6. 用户明确要装新 skill 时才装：`npx skills add <owner/repo> --skill <name> -g -y`（来源见上表括号；装不上=代理没开，提醒用户；或在线读内容照做不落盘）
 7. 输出语言跟随用户（默认中文），即使 skill 原文是英文
 8. 兜底（2026-11-05 用户定）：请求非琐碎但表中无匹配 → 说明"无匹配 skill，正常直接执行"后继续，不硬套、不再追问
 9. 链式编排（2026-11-05 用户定）：请求含多个意图，或用户点名要端到端流程时启用，与规则 4 的单步建议互补——
@@ -51,3 +51,8 @@ description: Identify the user's intent, pick the relevant skill from a curated 
     - 先弄清页面内容：读工作区现有代码/页面；没有就问一句产品类型与受众
     - 调 ui-ux-pro-max 按 style / product / typography / color 域查询，给 2-3 个设计方向（每个一句话理由 + 配色/字体要点）
     - 附参考网站：灵感站 awwwards.com、godly.website、land-book.com、onepagelove.com、mobbin.com（App 界面）、saaslandingpage.com；组件参考 shadcn/ui、Aceternity、Magic UI；有 image-search 工具时可搜真实截图佐证
+
+## 决策记录
+
+- 2026-11-05：grill-me 已覆盖 grill-with-docs 的场景，不再主动用 grill-with-docs
+- 2026-11-05：新增 UI 链（frontend-design / ui-ux-pro-max / design-taste-frontend / web-design-guidelines / anti-ui-slop）、兜底（规则 8）、链式编排（规则 9）、UI 推荐（规则 10）；锁定标记已实测核对
