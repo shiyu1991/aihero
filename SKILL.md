@@ -12,8 +12,11 @@ description: Intent router — pick the right skill from a curated set and follo
 | 意图信号 | Skill | 调用方式 |
 |---|---|---|
 | 新想法/功能要先聊透 | grill-me | 🔒 一句确认后调 |
+| 有决策自己答不了，要让用户/干系人填问卷收集 | to-questionnaire | 🔒 一句确认后调 |
 | 聊定了 → 写正式规格 | to-spec | 🔒 一句确认后调 |
+| 规格/讨论中理清领域概念：统一术语（GLOSSARY.md）、记架构决策（ADR） | domain-modeling | ✅ 直接调 |
 | 规格 → 拆工单 | to-tickets | 🔒 一句确认后调 |
+| 超大项目（一个会话装不下）：决策工单化，逐个解决直到路线清晰 | wayfinder | 🔒 一句确认后调 |
 | 按规格/工单实现（测试优先） | implement | 🔒 一句确认后调 |
 | 新 repo 首次接入这套流程 | setup-matt-pocock-skills | 🔒 确认后跑，会写文件 |
 | 长会话交接/换会话 | handoff | 🔒 一句确认后调 |
@@ -59,3 +62,4 @@ description: Intent router — pick the right skill from a curated set and follo
 - 2026-11-05：grill-me 已覆盖 grill-with-docs 的场景，不再主动用 grill-with-docs
 - 2026-11-05：新增 UI 链（frontend-design / ui-ux-pro-max / design-taste-frontend / web-design-guidelines / anti-ui-slop）、兜底（规则 8）、链式编排（规则 9）、UI 推荐（规则 10）；锁定标记已实测核对
 - 2026-11-06：路由表补 retro（任务复盘）与 improve-codebase-architecture（架构审查），主流程链延伸到 retro
+- 2026-11-06：产品从 0 到 1 链补齐：to-questionnaire（问卷收集）、domain-modeling（领域建模，无锁）、wayfinder（超大项目规划）
