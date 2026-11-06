@@ -1,17 +1,30 @@
 ---
 name: aihero
-description: Meta-router & UI playbook — use ONLY when the user explicitly invokes it (/aihero or $aihero attachment). Contains skill routing table, asset-research rules (three-source assets, embedded imagery), and the 10-item UI generation doctrine (bright-default palette, layout craft, motion checklist). Trigger ONLY on explicit invocation, never automatically. 识别意图 → 选用精选 skill → 按其指示执行。
+description: Meta-router & UI playbook — use ONLY when the user explicitly invokes it (/aihero or $aihero attachment). Contains entry gate (idea-first: any "build X" request routes to discussion before UI), skill routing table, asset-research rules (three-source assets, embedded imagery), and the 10-item UI generation doctrine (bright-default palette, layout craft, motion checklist). Trigger ONLY on explicit invocation, never automatically. 识别意图 → 选用精选 skill → 按其指示执行。
 ---
 
 # AI Hero Skills
 
 精选索引：只路由下表所列 skill（本地均已装在 `~/.agents/skills`，ZCode 可直接发现；部分经 `~/.zcode/skills` 软链接可见）。**表外的一律不主动路由**——更多不等于更好；用户点名 `/命令` 时照常支持。
 
+**按需加载（2026-11-07 结构重构）**：重内容已搬离本文件——规则 11/12 全文与两级交付 Checklist 在 `references/ui-doctrine.md`（**动 UI 前必读**），决策记录在 `references/decision-log.md`（**改守则/路由前查最近条目**），工具模板在 `assets/templates/`（image_pipeline / smoke_test 模板 / overflow_probe，新项目直接取用）。
+
+## 第 0 步：入口判定（2026-11-06 用户定，先于路由表）
+
+任何请求先判一类：**是要"创造什么"，还是"明确的专项操作"？** 思考讨论永远先于执行，UI 永远不抢跑。
+
+1. **创建类**——做一个 X：项目/网站/App/模块/小功能，凡从无到有 → 一律先聊透想法：grill-me（🔒 先确认）→ to-spec → to-tickets → implement。**UI 链不作为入口**，只到 implement 动手做界面前才介入；守则 12-⓪ 是 UI 动工前的设定确认，不是项目第一步
+2. **UI 类**——仅当用户明确点名 UI 话题（美化/优化界面/视觉风格/找设计参考）才进 UI 链；且动手前仍先沟通：弹窗问清用户想要什么样的（1-3 个方向题），确认后再改，不闷头执行
+3. **专项类**——审查/修 bug/交接/调研/写 PR 等 → 按路由表对应行直走
+4. **琐碎类**——一句话小改、单条查询、纯闲聊 → 直接做，不套流程
+
+口诀：**"做一个 X"= 先思考讨论；点名 UI = 进 UI 链但先沟通；改/查/审/聊 = 按表直走；琐碎 = 直接做。**
+
 ## 路由表
 
 | 意图信号 | Skill | 调用方式 |
 |---|---|---|
-| 新想法/功能要先聊透 | grill-me | 🔒 一句确认后调 |
+| 创建任何新东西（项目/网站/模块/小功能）要先聊透——见第 0 步 | grill-me | 🔒 一句确认后调 |
 | 有决策自己答不了，要让用户/干系人填问卷收集 | to-questionnaire | 🔒 一句确认后调 |
 | 聊定了 → 写正式规格 | to-spec | 🔒 一句确认后调 |
 | 规格/讨论中理清领域概念：统一术语（GLOSSARY.md）、记架构决策（ADR） | domain-modeling | ✅ 直接调 |
@@ -31,6 +44,10 @@ description: Meta-router & UI playbook — use ONLY when the user explicitly inv
 | 落地页/公司/产品官网从零建或重做，页面被嫌"AI 味/模板脸" | design-taste-frontend（即 tasteskill，leonxlnx） | ✅ 直接调 |
 | 交付前 UI 代码审计：按 Vercel Web Interface Guidelines 100+ 条规则出 file:line 报告 | web-design-guidelines（Vercel Labs） | ✅ 直接调 |
 | 产品级 UI 精修：对照 80 万+ 真实截图定设计契约，跑 finish gate 后再交付 | anti-ui-slop（UIZZE） | ✅ 直接调 |
+| 做动效/找动效机会/动效打磨与性能（该不该动、动什么属性、曲线时长、帧预算、术语定名） | emilkowalski 包：animate / find-animation-opportunities / improve-animations / animation-performance / animation-vocabulary | ✅ 直接调 |
+| 交付前动效专项终审（高标准评审，默认挑刺、认可要挣得） | review-animations（emilkowalski） | 🔒 一句确认后调 |
+| 真浏览器交互走查/回归测试（模拟点击、滚动、输入并断言行为；与多断点截图配合） | browser-use:web-gui-tester | ✅ 直接调 |
+| 静态站部署出预览/分享 URL（手机直接验收、扫码即看） | zcode-site:site-deploy | ✅ 直接调 |
 | 推荐好看的 UI / 要设计灵感、参考网站（按页面内容给方向和站点，不动手改） | ui-ux-pro-max（按规则 10 展开） | ✅ 直接调 |
 | 需要带引用的背景调研 | research | ✅ 直接调 |
 | 写测试 / 红绿重构 | tdd | ✅ 自动生效，无需路由 |
@@ -42,7 +59,7 @@ description: Meta-router & UI playbook — use ONLY when the user explicitly inv
 1. 行动前**读目标 SKILL.md 全文**——上表只做定位，摘要可能过时
 2. 意图清晰唯一 → 按表处理。Skill 工具拒绝时：🔒 skill → 请用户输入 `/<名称>`，或直接 Read 本地 SKILL.md 照做（兜底路径，始终可用）；**本地未装/Read 不到 → 明说"该 skill 未安装"，按规则 6 给安装命令或问是否改用相近 skill，不静默失败、不硬造内容**（2026-11-05 测试补）
 3. 意图模糊 → 列 2-3 个候选 + 一句话理由让用户选
-4. 主流程边界主动建议下一步（grill-me → to-spec → to-tickets → implement → code-review → pr → retro），不在用户专注时打断；UI 流程同理（frontend-design / ui-ux-pro-max 起手定方向 → design-taste-frontend 做落地页 → web-design-guidelines / anti-ui-slop 收尾审计）。**UI 链执行原则（2026-11-06 A/B 测试实证）：skill 只管"皮"（配色/字体/结构语汇），内容密度与功能完备由模型基线负责、不得因 skill 清单削减；多 skill 按阶段串行调用，不同时全载**
+4. 主流程边界主动建议下一步（grill-me → to-spec → to-tickets → implement → code-review → pr → retro），不在用户专注时打断；UI 流程同理（frontend-design / ui-ux-pro-max 起手定方向 → design-taste-frontend 做落地页 → 实现阶段动效编排可串 emilkowalski 动画包 → web-design-guidelines / anti-ui-slop 收尾审计 → 多断点截图与交互走查（见 12-⑪）→ site-deploy 出 URL 交付）。**UI 链执行原则（2026-11-06 A/B 测试实证）：skill 只管"皮"（配色/字体/结构语汇），内容密度与功能完备由模型基线负责、不得因 skill 清单削减；多 skill 按阶段串行调用，不同时全载**
 5. **表外 skill**（grilling、wayfinder、teach、domain-modeling、ask-matt 等）：不主动路由、不主动安装。ask-matt 的路由职能已由本 skill 取代
 6. 用户明确要装新 skill 时才装：`npx skills add <owner/repo> --skill <name> -g -y`（来源见上表括号；装不上=代理没开，提醒用户；或在线读内容照做不落盘）
 7. 输出语言跟随用户（默认中文），即使 skill 原文是英文
@@ -56,29 +73,10 @@ description: Meta-router & UI playbook — use ONLY when the user explicitly inv
     - 先弄清页面内容：读工作区现有代码/页面；没有就问一句产品类型与受众
     - 调 ui-ux-pro-max 按 style / product / typography / color 域查询，给 2-3 个设计方向（每个一句话理由 + 配色/字体要点）
     - 附参考网站：灵感站 awwwards.com、godly.website、land-book.com、onepagelove.com、mobbin.com（App 界面）、saaslandingpage.com；组件参考 shadcn/ui、Aceternity、Magic UI；有 image-search 工具时可搜真实截图佐证
-11. 素材与竞品调研（2026-11-06 用户定，UI/产品类请求动手前必跑，一句话小改可跳过）：像产品经理一样先调研再创作——
-    - **素材三源，必须真寻、真参考、真使用（只看不用于不算）**：①竞品实站（>UI 画廊，人家已打磨完善；用画廊必须进其品类相关内容页，不做关键词泛查）②GitHub 等免费站（UI 组件/图标/插画/模板库，MIT/免费许可优先）③ui-ux-pro-max 风格库
-    - **配图是食材级要素（2026-11-06 西餐厅页教训）：离线单文件也必须内嵌真实图像——image-search 找图 → 下载 → PIL 压缩（宽≤960、q≈52、总≤800KB）→ base64 data-URI 注入（占位符+脚本替换，不经上下文）；"零外部依赖"不是无图借口**；图片来源与许可写进页脚铭牌
-    - 离线单文件场景下，用真实产品的数据结构组织演示数据；**内容与动效趋势都要调研**（动效优先 hero、滚动编排、微交互、材质层次）
-12. UI 生成守则（2026-11-06 多轮 A/B 实证后用户定总纲：**素材必寻必用（UI 素材/竞品实站/GitHub 免费库）、配图是要素、布局实用美观大气（高空间利用率，拒绝挤压、层叠、超出无法滚动）、高保真、高交互体验、符合场景的动效/插图、背景、配图。UI/产品任务在拆解（规则 9 或单任务）时必须整体注入，逐项对照执行，缺项即不合格**）：
-    - ⓪ **新项目先拷问（2026-11-06 用户点破的最大缺口）：全新 UI/产品请求（非一句话小改）动手前必须先问 3-5 个关键问题——受众与调性、明暗风格偏好、内容重点、转化目标、有无参考站点；用户答完才排链。禁止替用户编造产品设定（品牌/业务/文案全是自创=返工之源；天气、餐厅、旅游三案实证）**
-    - ① 风格判断：工具/信息类页面走品类正统（用户期待 > 新颖，如天气页就要天空渐变+毛玻璃+大温度）；品牌/门面类页面才追求差异化。**配色基调默认开朗光明（2026-11-06 用户定，依人的心理喜好）：整体主题尽可能选明亮底色，不做阴暗选择；深色仅在用户点名要求、或题材强需求（如夜间酒吧/恐怖题材）时采用，且须在交付说明里讲清为什么用深色；深色可以作局部点缀（照片节/页脚/对比带），不当整页基调**
-    - ② PM 调研（规则 11 三源素材 + 配图）
-    - ③ 内容密度与高保真：信息饱满、题材专属素材、真实数据质感（细节完整可推敲）；"安静"指装饰克制 ≠ 内容单薄
-    - ④ 编辑：去重合并，不平行罗列
-    - ⑤ 动效与交互（执行深度 = 高级感，**无动效直接判不合格**）：入场编排、滚动错峰、背景氛围动效（雨/云/光粒子按题材）、数字滚动、条形生长、路径描边、悬停微交互、动效回答操作、可点击组件（灯箱/展开/切换）
-    - ⑥ 转化机制（有行动目标时）：倒计时/余量/信任标记
-    - ⑦ 工程底线：reduced-motion 全覆盖、动态内容容器定高防 CLS、审计清单过一遍
-    - ⑧ 交付纪律：改被批评的**原文件**（用户刷新即见），不写新文件名；skill/规则改动须用户认可效果后再入库推送
-    - ⑨ 版式工艺：**拒绝挤压**（窄屏断点降列不压扁、文字不硬折行）；**拒绝错误层叠**（装饰不盖信息、高亮不遮数据）；**拒绝超出无法滚动**（横向内容必须可滚或有断点收纳）；贴边要有暗示（横滑区渐隐提示）；滚动决策（关键信息吸顶随行）；**长页可加返回顶部按钮**（2026-11-06 用户定，非必须：滚过首屏后浮现，与吸底条错位不遮挡，reduced-motion 下直接跳转）；**高空间利用率**（宽屏并排减竖向占用）
-    - ⑩ 风格分类推荐（2026-11-06 用户补）：动手前从需求分析风格分类——用 ui-ux-pro-max 风格库检索（查询词=品类+平台+气质，2~5 词，一种主导意图；如"weather consumer app glass translucent"→Liquid Glass/Apple 系），**给用户看：推荐风格+一句理由+2 个备选，且每条必须附至少一个可打开的参考地址**（官方规范优先，其次案例画廊）；用户点名风格时绝对优先；检索不中就明说"无验证命中"再给通用建议，不硬凑。注意：查询词决定命中质量（"apple ios minimal"会带偏去瑞士极简，"glass translucent"才命中 Apple Liquid Glass）
-      - 参考地址锚点（已验证可达；无映射时现场搜索验证再给，找不到就明说）：Liquid Glass/Apple 系→ developer.apple.com/design/human-interface-guidelines/materials；Brutalism→ brutalistwebsites.com；Bento Grid→ bento.me；通用灵感→ godly.website / awwwards.com / land-book.com / mobbin.com（App 界面）
-13. 交互式提问适配（2026-11-06 用户点破）：凡向用户提问、给选项、要确认——包括 grill-me/grilling 的每一轮拷问、规则 3 的候选选择、规则 9 的整链确认、规则 12-⓪ 的新项目拷问——**一律用 AskUserQuestion 弹窗呈现，不贴纯文本问题**。每批 ≤4 题、每题 2-4 选项、推荐项排第一并在标签尾标"（推荐）"、用户自由输入走"Other"；超过 4 题分批弹。grilling 的 markdown 格式只是问题设计规范，交付载体是弹窗。
+11. **素材与竞品调研**（UI/产品类动手前必跑，一句话小改可跳过）：素材四源（竞品实站 / GitHub 免费站 / ui-ux-pro-max 风格库 / SVG 插画）+ 配图食材级内嵌——**全文见 references/ui-doctrine.md 规则 11 节**
+12. **UI 生成守则**（总纲：素材必寻必用、配图是要素、布局大气高利用率、高保真、高交互、题材动效；缺项即不合格）：子项 ⓪新项目拷问 / ①明亮默认 / ②PM 调研 / ③内容密度 / ④编辑 / ⑤动效 / ⑥转化 / ⑦工程底线 / ⑧交付纪律 / ⑨版式工艺 / ⑩风格推荐（含品牌规范源）/ ⑪验证与交付①-⑧（断点截图·交互走查·dump-dom·部署URL·环境坑·SEO·溢出双验·性能）/ ⑫状态完备性 / 条件增强项（SEO·主题切换·国际化）——**全文与两级交付 Checklist 见 references/ui-doctrine.md，动 UI 前必读**
+13. 交互式提问适配（2026-11-06 用户点破）：凡向用户提问、给选项、要确认——包括 grill-me/grilling 的每一轮拷问、规则 3 的候选选择、规则 9 的整链确认、规则 12-⓪ 的新项目拷问——**一律用 AskUserQuestion 弹窗呈现，不贴纯文本问题**。每批 ≤4 题、每题 2-4 选项、推荐项排第一并在标签尾标"（推荐）"、用户自由输入走"Other"；超过 4 题分批弹。grilling 的 markdown 格式只是问题设计规范，交付载体是弹窗。**弹窗未作答≈用户不在场（2026-11-07 用户定）**：原样重发一次，再未答即降级文字推进流程，不反复弹、不建议报 bug。
 
 ## 决策记录
 
-- 2026-11-05：grill-me 已覆盖 grill-with-docs 的场景，不再主动用 grill-with-docs
-- 2026-11-05：新增 UI 链（frontend-design / ui-ux-pro-max / design-taste-frontend / web-design-guidelines / anti-ui-slop）、兜底（规则 8）、链式编排（规则 9）、UI 推荐（规则 10）；锁定标记已实测核对
-- 2026-11-06：路由表补 retro（任务复盘）与 improve-codebase-architecture（架构审查），主流程链延伸到 retro
-- 2026-11-06：产品从 0 到 1 链补齐：to-questionnaire（问卷收集）、domain-modeling（领域建模，无锁）、wayfinder（超大项目规划）
-- 2026-11-06：A/B 测试实证（A<B<A2）后写入 UI 链执行原则：skill 管皮、基线管内容密度、多 skill 串行不同载
+全文见 `references/decision-log.md`（2026-11-05 起 17 条，改守则/路由前先查最近条目）。
