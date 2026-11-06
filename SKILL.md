@@ -42,7 +42,7 @@ description: Intent router — pick the right skill from a curated set and follo
 1. 行动前**读目标 SKILL.md 全文**——上表只做定位，摘要可能过时
 2. 意图清晰唯一 → 按表处理。Skill 工具拒绝时：🔒 skill → 请用户输入 `/<名称>`，或直接 Read 本地 SKILL.md 照做（兜底路径，始终可用）；**本地未装/Read 不到 → 明说"该 skill 未安装"，按规则 6 给安装命令或问是否改用相近 skill，不静默失败、不硬造内容**（2026-11-05 测试补）
 3. 意图模糊 → 列 2-3 个候选 + 一句话理由让用户选
-4. 主流程边界主动建议下一步（grill-me → to-spec → to-tickets → implement → code-review → pr → retro），不在用户专注时打断；UI 流程同理（frontend-design / ui-ux-pro-max 起手定方向 → design-taste-frontend 做落地页 → web-design-guidelines / anti-ui-slop 收尾审计）
+4. 主流程边界主动建议下一步（grill-me → to-spec → to-tickets → implement → code-review → pr → retro），不在用户专注时打断；UI 流程同理（frontend-design / ui-ux-pro-max 起手定方向 → design-taste-frontend 做落地页 → web-design-guidelines / anti-ui-slop 收尾审计）。**UI 链执行原则（2026-11-06 A/B 测试实证）：skill 只管"皮"（配色/字体/结构语汇），内容密度与功能完备由模型基线负责、不得因 skill 清单削减；多 skill 按阶段串行调用，不同时全载**
 5. **表外 skill**（grilling、wayfinder、teach、domain-modeling、ask-matt 等）：不主动路由、不主动安装。ask-matt 的路由职能已由本 skill 取代
 6. 用户明确要装新 skill 时才装：`npx skills add <owner/repo> --skill <name> -g -y`（来源见上表括号；装不上=代理没开，提醒用户；或在线读内容照做不落盘）
 7. 输出语言跟随用户（默认中文），即使 skill 原文是英文
@@ -63,3 +63,4 @@ description: Intent router — pick the right skill from a curated set and follo
 - 2026-11-05：新增 UI 链（frontend-design / ui-ux-pro-max / design-taste-frontend / web-design-guidelines / anti-ui-slop）、兜底（规则 8）、链式编排（规则 9）、UI 推荐（规则 10）；锁定标记已实测核对
 - 2026-11-06：路由表补 retro（任务复盘）与 improve-codebase-architecture（架构审查），主流程链延伸到 retro
 - 2026-11-06：产品从 0 到 1 链补齐：to-questionnaire（问卷收集）、domain-modeling（领域建模，无锁）、wayfinder（超大项目规划）
+- 2026-11-06：A/B 测试实证（A<B<A2）后写入 UI 链执行原则：skill 管皮、基线管内容密度、多 skill 串行不同载
