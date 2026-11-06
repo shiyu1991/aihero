@@ -69,7 +69,7 @@ description: Intent router — pick the right skill from a curated set and follo
     - ⑥ 转化机制（有行动目标时）：倒计时/余量/信任标记
     - ⑦ 工程底线：reduced-motion 全覆盖、动态内容容器定高防 CLS、审计清单过一遍
     - ⑧ 交付纪律：改被批评的**原文件**（用户刷新即见），不写新文件名；skill/规则改动须用户认可效果后再入库推送
-    - ⑨ 版式工艺：**拒绝挤压**（窄屏断点降列不压扁、文字不硬折行）；**拒绝错误层叠**（装饰不盖信息、高亮不遮数据）；**拒绝超出无法滚动**（横向内容必须可滚或有断点收纳）；贴边要有暗示（横滑区渐隐提示）；滚动决策（关键信息吸顶随行）；**高空间利用率**（宽屏并排减竖向占用）
+    - ⑨ 版式工艺：**拒绝挤压**（窄屏断点降列不压扁、文字不硬折行）；**拒绝错误层叠**（装饰不盖信息、高亮不遮数据）；**拒绝超出无法滚动**（横向内容必须可滚或有断点收纳）；贴边要有暗示（横滑区渐隐提示）；滚动决策（关键信息吸顶随行）；**长页可加返回顶部按钮**（2026-11-06 用户定，非必须：滚过首屏后浮现，与吸底条错位不遮挡，reduced-motion 下直接跳转）；**高空间利用率**（宽屏并排减竖向占用）
     - ⑩ 风格分类推荐（2026-11-06 用户补）：动手前从需求分析风格分类——用 ui-ux-pro-max 风格库检索（查询词=品类+平台+气质，2~5 词，一种主导意图；如"weather consumer app glass translucent"→Liquid Glass/Apple 系），**给用户看：推荐风格+一句理由+2 个备选，且每条必须附至少一个可打开的参考地址**（官方规范优先，其次案例画廊）；用户点名风格时绝对优先；检索不中就明说"无验证命中"再给通用建议，不硬凑。注意：查询词决定命中质量（"apple ios minimal"会带偏去瑞士极简，"glass translucent"才命中 Apple Liquid Glass）
       - 参考地址锚点（已验证可达；无映射时现场搜索验证再给，找不到就明说）：Liquid Glass/Apple 系→ developer.apple.com/design/human-interface-guidelines/materials；Brutalism→ brutalistwebsites.com；Bento Grid→ bento.me；通用灵感→ godly.website / awwwards.com / land-book.com / mobbin.com（App 界面）
 
