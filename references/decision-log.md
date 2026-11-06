@@ -23,3 +23,4 @@
 - 2026-11-07：结构重构（用户批 A+B+C+D）：SKILL.md 瘦身（规则 11/12 全文与决策记录搬 references/ 按需加载），新增交付两级 Checklist、工具模板库 assets/templates/（image_pipeline / smoke_test 模板 / overflow_probe）、⑤补交互走查执行配方、⑧挂 axe-core；路由与规则骨架保持完整
 - 2026-11-07：主题切换与国际化入「条件增强项」（用户定，产品级可选）：主题=CSS 变量双主题+prefers-color-scheme 跟随+记忆+暗色对比度重查（12-① 默认明亮仍优先）；i18n=文案外置+lang/hreflang/Intl/RTL 逻辑属性；均基线职责不装 skill；埋点/安全维持跳过清单语义
 - 2026-11-07：技术选型拷问入册（用户批，references/tech-selection.md + 第 0 步挂钩）：创建类请求在 grill 产品想法后、to-spec 前必过选型轮（形态/前端栈/后端数据/部署/约束矩阵/演示最简栈/复用资产七维）；三铁律=用户点名技术免拷问、结论必入 SPEC Implementation Decisions、单分歧点免弹窗
+- 2026-11-07：拷问维度四补（用户批 A+B+C+D）：tech-selection 加第 8 维兼容矩阵（微信 webview X5/XWeb 必问+特性降级）与「推荐+2 备选」呈现方式；12-⓪ 问题清单加内容供给（谁来给=头号延期源）与验收方式（交付形态+验收人）两问
