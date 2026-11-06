@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pomofocus 番茄钟 — 25 分钟，只做一件事</title>
+<style>
+  :root{
+    --paper:#F5F7F6;
+    --ink:#16302B;
+    --ink-soft:#4A6660;
+    --tomato:#E8503A;        /* 只给计时环与强调 */
+    --tomato-deep:#D63A24;   /* 按钮底色，保证白字对比度 */
+    --sage:#6E9C8E;          /* 休息时段 */
+    --line:#D8E0DC;
+    --display:"Kaiti SC","STKaiti","KaiTi","LXGW WenKai",serif;
+    --body:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+  }
+  *{box-sizing:border-box;margin:0}
+  body{background:var(--paper);color:var(--ink);font-family:var(--body);line-height:1.65;font-size:16px}
+  .wrap{max-width:960px;margin:0 auto;padding:0 24px}
+
+  header{display:flex;justify-content:space-between;align-items:baseline;padding:28px 0}
+  .wordmark{font-family:var(--display);font-size:20px;font-weight:700}
+  .wordmark em{font-style:normal;color:var(--tomato-deep)}
+  header a{color:var(--ink-soft);text-decoration:none;font-size:14px}
+  header a:hover{color:var(--ink)}
+
+  .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:48px;align-items:center;padding:64px 0 48px}
+  h1{font-family:var(--display);font-size:clamp(34px,5.2vw,56px);line-height:1.22;font-weight:700;letter-spacing:.01em}
+  .lede{margin-top:18px;font-size:18px;color:var(--ink-soft);max-width:34em}
+  .actions{margin-top:32px;display:flex;gap:14px;flex-wrap:wrap}
+  .btn{font:inherit;font-size:15px;padding:11px 22px;border-radius:2px;border:1px solid transparent;cursor:pointer;text-decoration:none;display:inline-block}
+  .btn-primary{background:var(--tomato-deep);color:#fff}
+  .btn-primary:hover{background:#B92E1A}
+  .btn-ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+  .btn-ghost:hover{border-color:var(--ink-soft)}
+  .btn:focus-visible{outline:2px solid var(--tomato);outline-offset:2px}
+  .session-note{margin-top:26px;font-size:14px;color:var(--ink-soft)}
+
+  /* 计时环：全页唯一的放胆处 */
+  .timer{position:relative;width:min(280px,100%);margin:0 auto;aspect-ratio:1}
+  .timer svg{width:100%;height:100%;display:block;transform:rotate(-90deg)}
+  .timer .track{fill:none;stroke:var(--line);stroke-width:6}
+  .timer .arc{fill:none;stroke:var(--tomato);stroke-width:6;stroke-linecap:butt;transition:stroke .3s}
+  .timer.rest .arc{stroke:var(--sage)}
+  .timer-face{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:2px}
+  .timer-num{font-variant-numeric:tabular-nums;font-size:56px;font-weight:600;line-height:1}
+  .timer-state{font-size:13px;color:var(--ink-soft)}
+
+  section.features{padding:56px 0}
+  h2{font-family:var(--display);font-size:28px;font-weight:700;margin-bottom:28px}
+  .feature{display:grid;grid-template-columns:180px 1fr;gap:24px;padding:20px 0;border-top:1px solid var(--line)}
+  .feature dt{font-weight:600}
+  .feature dd{color:var(--ink-soft)}
+
+  .cta-band{padding:64px 0;border-top:1px solid var(--line)}
+  .cta-band p{font-size:18px;margin-bottom:24px}
+  footer{padding:28px 0;font-size:13px;color:var(--ink-soft)}
+
+  @media (max-width:720px){
+    .hero{grid-template-columns:1fr;gap:36px;padding-top:40px}
+    .feature{grid-template-columns:1fr;gap:4px}
+    .timer-num{font-size:44px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .timer .arc{transition:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="wordmark">Pomofocus <em>番茄钟</em></div>
+    <a href="#features">它怎么帮你专注</a>
+  </header>
+
+  <main>
+    <div class="hero">
+      <div>
+        <h1>25 分钟，<br>只做一件事</h1>
+        <p class="lede">把一天切成专注与休息的循环。开始后，这一刻钟只属于眼前这项任务——其他事，等铃响再说。</p>
+        <div class="actions">
+          <button class="btn btn-primary" id="toggle">开始专注</button>
+          <a class="btn btn-ghost" href="#features">看它怎么运作</a>
+        </div>
+        <p class="session-note" id="note">今天从第一个番茄开始。</p>
+      </div>
+      <div class="timer" id="timer" role="timer" aria-label="番茄钟倒计时">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <circle class="track" cx="50" cy="50" r="46"></circle>
+          <circle class="arc" id="arc" cx="50" cy="50" r="46"></circle>
+        </svg>
+        <div class="timer-face">
+          <div class="timer-num" id="clock">25:00</div>
+          <div class="timer-state" id="state">准备专注</div>
+        </div>
+      </div>
+    </div>
+
+    <section class="features" id="features">
+      <h2>它怎么帮你专注</h2>
+      <dl>
+        <div class="feature"><dt>时长可调</dt><dd>默认专注 25 分钟、休息 5 分钟，也能按你的节奏改成 50/10 或 90/20。</dd></div>
+        <div class="feature"><dt>任务清单</dt><dd>开工前写下这一轮要完成的事，铃响时勾掉它，番茄数自动累加。</dd></div>
+        <div class="feature"><dt>数据统计</dt><dd>每天、每周完成了多少个番茄，一眼看清自己的专注时间花在了哪里。</dd></div>
+      </dl>
+    </section>
+
+    <section class="cta-band">
+      <p>无需注册，打开即用。</p>
+      <button class="btn btn-primary" id="toggle2">开始专注</button>
+    </section>
+  </main>
+
+  <footer>Pomofocus 番茄钟 — 给愿意坐下来的人。</footer>
+</div>
+
+<script>
+(function(){
+  var FOCUS=25*60, REST=5*60, C=2*Math.PI*46;
+  var arc=document.getElementById('arc'), clock=document.getElementById('clock'),
+      state=document.getElementById('state'), note=document.getElementById('note'),
+      box=document.getElementById('timer'), btns=[document.getElementById('toggle'),document.getElementById('toggle2')];
+  var total=FOCUS, left=FOCUS, running=false, mode='focus', done=0, tid=null;
+  arc.style.strokeDasharray=C;
+  function fmt(s){var m=Math.floor(s/60),r=s%60;return (m<10?'0':'')+m+':'+(r<10?'0':'')+r;}
+  function draw(){
+    arc.style.strokeDashoffset=C*(1-left/total);
+    clock.textContent=fmt(left);
+    state.textContent=running?(mode==='focus'?'专注中':'休息中'):(left===total?'准备'+(mode==='focus'?'专注':'休息'):'已暂停');
+    btns.forEach(function(b){b.textContent=running?'暂停':'开始'+(mode==='focus'?'专注':'休息');});
+  }
+  function tick(){
+    if(left>0){left--;}
+    else{
+      if(mode==='focus'){done++;note.textContent='今天已完成 '+done+' 个番茄'+(done%4===0?'，长休息一会儿。':'。');mode='rest';total=REST;left=REST;box.classList.add('rest');}
+      else{mode='focus';total=FOCUS;left=FOCUS;box.classList.remove('rest');}
+    }
+    draw();
+  }
+  btns.forEach(function(b){b.addEventListener('click',function(){
+    running=!running;
+    if(running){tid=setInterval(tick,1000);}else{clearInterval(tid);}
+    draw();
+  });});
+  draw();
+})();
+</script>
+</body>
+</html>
