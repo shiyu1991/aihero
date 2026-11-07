@@ -5,7 +5,7 @@
 ## 拷问维度（按序，一次不清就分批弹）
 
 1. **形态**（决定一切下游）：网站 / WebApp / 原生 App / 跨端 App（React Native·Flutter）/ 小程序 / 桌面 / CLI / API 服务
-2. **前端栈**（Web 形态时）：纯 HTML/CSS/JS 零构建 vs 框架（React/Vue/Svelte）vs SSR/SSG（Next/Nuxt/Astro）——判据排序：交互复杂度 → SEO 需求（强 SEO 联动 ⑪⑥ 倾向 SSR/SSG）→ 团队栈
+2. **前端栈**（Web 形态时）：纯 HTML/CSS/JS 零构建 vs 框架（React/Vue/Svelte）vs SSR/SSG（Next/Nuxt/Astro）——判据排序：交互复杂度 → SEO 需求（强 SEO 联动 ⑪⑥ 倾向 SSR/SSG）→ 团队栈。**2026-11-07 用户定**：框架候选 React 与 Vue 必并列出现（防语料偏差致 Vue 缺席）；架构默认**首推前后端分离**（SPA+API），偏离（SSR/SSG/纯静态）时一句话说明理由
 3. **后端与数据**：无后端（静态 + 本地存储）/ BaaS（Supabase/Firebase 类）/ 自建 API（语言+框架）/ 数据库选型（关系 vs 文档 vs KV）
 4. **部署目标**：静态托管（site-deploy / GitHub Pages / Vercel）/ 自有服务器 / 云函数——联动 ⑪④ 交付方式
 5. **约束矩阵**：团队熟悉度 > 生态成熟度 > 性能 > 成本 > 维护负担；有硬约束（预算/合规/已有运维）先亮出来
@@ -13,7 +13,7 @@
 7. **复用资产**：现有 repo / DESIGN.md（品牌规范源沉淀）/ 设计系统 MASTER.md（ui-ux-pro-max --persist）——有就复用，不重造
 8. **兼容矩阵（2026-11-07 用户补，中国场景高价值）**：要兼容哪些浏览器/内核/设备档次？——**微信内置 webview（X5/XWeb）必问**（分享页 90% 在微信打开，`backdrop-filter`/`aspect-ratio`/`mask-image` 等特性在老 webview 需降级方案）；国产双核浏览器、iOS Safari、低端安卓机档位；结论影响 CSS 特性取舍与降级策略，写入 SPEC
 
-**选型呈现方式（对齐 12-⑩ 交互风格）**：给**推荐栈 + 2 备选**，各附一句理由与关键取舍，用户挑或点名；单向推导只在用户明确"你定"时使用。
+**选型呈现方式（对齐 12-⑩ 交互风格）**：给**推荐栈 + 2 备选**，各附一句理由与关键取舍，用户挑或点名；框架类候选 React/Vue 双列（用户定）；单向推导只在用户明确"你定"时使用。
 
 ## 三条铁律
 
